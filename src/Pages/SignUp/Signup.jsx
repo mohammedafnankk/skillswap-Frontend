@@ -139,7 +139,7 @@ function Signup() {
     <div>
         <Navbar />
      
-    <div className="pt-[20px] max-sm:pt-[70px]">
+    <div className="max-sm:pt-[70px]">
       <div className="bg-[#F5F5F]  max-sm:p-[10px]">
         <div className="grid grid-cols-2 gap-[10px] bg-white rounded-[15px] max-sm:grid-cols-1">
           <div className="flex flex-col justify-center p-[60px] max-sm:p-[10px] ">
