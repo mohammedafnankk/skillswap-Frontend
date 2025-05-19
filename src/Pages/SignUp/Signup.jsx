@@ -13,6 +13,7 @@ function Signup() {
   const [inputType, setInputType] = useState("password");
   const [cinputType, setCInputType] = useState("password");
   const [cPassword, setCPassword] = useState("");
+  const [isCheck,setIsCheck] = useState(false)
 
 
   const Months = [
@@ -88,6 +89,9 @@ function Signup() {
     } else {
       document.getElementById("student_mentor").innerHTML = "";
     }
+    if(isCheck === false){
+      return console.log("I agree to the terms of service and privacy policy {check box require}")
+    }
     const Username = username.charAt(0).toUpperCase() + username.slice(1);
     axiosInstencs
       .post("/register", {
@@ -123,6 +127,13 @@ function Signup() {
   const cShowPassword = () => {
     setCInputType((prev) => (prev === "password" ? "text" : "password"));
   };
+
+  const checkBox =()=>{
+    console.log("helo")
+     setIsCheck((prev)=> (prev === false?true:false))
+    console.log(isCheck);
+    
+  }
 
   return (
     <div>
@@ -269,6 +280,8 @@ function Signup() {
               <div className="pb-[10px]">
                 <input
                   type="checkbox"
+                  value={isCheck}
+                  onClick={checkBox}
                   className="accent-purple-700 w-4 h-4 cursor-pointer"
                 />{" "}
                 <span className="pl-[5px] text-sm">
@@ -282,14 +295,14 @@ function Signup() {
                   </a>
                 </span>
               </div>
-              <div className="bg-[#7c3bed] text-center rounded-[10px] mt-[10px] hover:bg-purple-700">
-                <button className="text-[13px] text-white p-[10px]">
+              <div className={`bg-[#7c3bed] text-center rounded-[10px] mt-[10px] ${isCheck === false?"bg-purple-300":"bg-[#7c3bed] hover:bg-purple-700"}`}>
+                <button className={`text-[13px] text-white p-[10px]`}>
                   Create account
                 </button>
               </div>
               <p className="text-center pt-[20px] text-sm">
                 Have an account?{" "}
-                <Link to="/login" className="text-purple-700">
+                <Link to="/login" className={`text-purple-700`}>
                   Sign In
                 </Link>
               </p>
