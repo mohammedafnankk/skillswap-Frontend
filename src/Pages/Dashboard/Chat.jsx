@@ -279,11 +279,11 @@ function Chat() {
                                 : "block"
                             }`}
                           >
-                            4:21 PM
+                            {/* 4:21 PM */}
                           </span>
                         </div>
                         <p className="text-[13px] text-[#94a3b8] text-start truncate w-56 max-lg:w-28 max-sm:w-52 ">
-                          Thanks for the help with React hooks!
+                          {/* Thanks for the help with React hooks! */}
                         </p>
                       </div>
 
