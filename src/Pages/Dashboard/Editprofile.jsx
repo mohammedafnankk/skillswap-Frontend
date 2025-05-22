@@ -29,6 +29,7 @@ function Editprofile() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [avatar, setAvatar] = useState([]);
+  const [isLoading,setIsLoading] = useState(false)
 
   const options = [
     { value: "React.js", label: "ReactJS" },
@@ -120,26 +121,29 @@ function Editprofile() {
     }),
   };
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const formData = new FormData();
-    formData.append("avatar", e.target.files[0]);
-
-    axiosInstencs
-      .post(`/avatarupload`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    formData.append("file", e.target.files[0]);
+     formData.append("upload_preset", "skillswap_user_avatar")
+     setIsLoading(true)
+   await axiosInstencs.
+      // .post(`/avatarupload`, formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // })
+       post("https://api.cloudinary.com/v1_1/dy53k65i2/image/upload",formData)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.secure_url);
+        setIsLoading(false)
         axiosInstencs
           .patch(`/personalinfo/${id}`, {
-            avatar: res.data.imageUrl,
+            avatar: res.data.secure_url,
           })
           .then((res) => {
             console.log(res.data);
             window.location.reload()
-          });
+          }).catch((err)=>console.log("err",err))
       })
       .catch((err) => console.log(err));
   };
@@ -254,10 +258,17 @@ function Editprofile() {
                       <label
                         type="submit"
                         htmlFor="file-upload"
-                        className="cursor-pointer w-full hover:bg-slate-100 text-sm px-4 py-2 border rounded-md"
+                        
                       >
-                        <i class="fa-solid fa-arrow-up-from-bracket pr-2"></i>
-                        Upload New Picture
+                        {isLoading === false?
+                        <p className="cursor-pointer w-full hover:bg-slate-100 text-sm px-4 py-2 border rounded-md"> <i class="fa-solid fa-arrow-up-from-bracket pr-2"></i>
+                        Upload New Picture</p>
+                        :
+                        <p className="inline-flex gap-3 items-center text-sm px-4 py-2 border rounded-md"><p className="h-4 w-4 border-black border-2 border-t-transparent rounded-full animate-spin"></p>Uploading</p>
+
+                        }
+                        
+                  
                       </label>
                     </form>
                     <button

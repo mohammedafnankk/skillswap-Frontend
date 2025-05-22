@@ -266,7 +266,7 @@ function Chat() {
                             className="w-12 h-12 rounded-full overflow-hidden object-cover "
                           />
                         </span>
-                        <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"></span>
+                        {/* <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"></span> */}
                       </div>
 
                       <div className="flex-1 pl-2">
@@ -316,7 +316,7 @@ function Chat() {
                 <div className="flex flex-col">
                   <h3 className="font-medium ">{selectedUser.username}</h3>
                   <p className="text-xs inline-flex justify-start text-gray-500 ">
-                    Online
+                    {/* Online */}
                   </p>
                 </div>
               </div>
