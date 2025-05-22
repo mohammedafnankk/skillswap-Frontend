@@ -30,7 +30,9 @@ function Editprofile() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [avatar, setAvatar] = useState([]);
   const [isLoading,setIsLoading] = useState(false)
-
+  const [isMainLoading,setIsMainLoading]= useState(false)
+  const [isSaving,setIsSaving] = useState(false)
+  const [isSkillSaving,setIsSkillSaving] = useState(false)
   const options = [
     { value: "React.js", label: "ReactJS" },
     { value: "JavaScript", label: "JavaScript" },
@@ -52,6 +54,7 @@ function Editprofile() {
   console.log(skills);
   
   useEffect(() => {
+    setIsMainLoading(true)
     axiosInstencs
       .get(`/singleuser/${id}`,{
         headers:{
@@ -69,6 +72,7 @@ function Editprofile() {
         setBio(res.data.msg.bio);
         setCompany(res.data.msg.company);
         setWebsite(res.data.msg.website);
+        setIsMainLoading(false)
       })
       .catch((err) => console.log(err));
   }, [id,access_token]);
@@ -188,7 +192,7 @@ function Editprofile() {
         document.getElementById("bio-require").style.color = "#6b7280";
       }
     }
-
+   setIsSaving(true)
     axiosInstencs
       .patch(`/personalinfo/${id}`, {
         username: userName,
@@ -203,6 +207,7 @@ function Editprofile() {
         toast.success("Basic Info Updated");
         // navigate("/profile");
         setActiveTab("skills")
+        setIsSaving(false)
       })
       .catch((err) => console.log(err));
   };
@@ -214,12 +219,14 @@ function Editprofile() {
   // };
 
   const handleSkillsAdd =(e)=>{
+    setIsSkillSaving(true)
     e.preventDefault()
     axiosInstencs.patch(`/personalinfo/${id}`,{
     skills:skills
     }).then((res)=>{
       console.log(res.data);
       toast.success("Skills Updated")
+      setIsSkillSaving(false)
       setActiveTab("basic-info")
     }).catch((err)=>console.log(err))
   }
@@ -414,7 +421,7 @@ function Editprofile() {
                     <button
                       onClick={saveChangesHandler}
                       className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2"
-                    >
+                    >{isSaving?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
                       <i class="fa-regular fa-floppy-disk"></i>Save Changes
                     </button>
                   </div>
@@ -496,7 +503,8 @@ function Editprofile() {
                     />
                   </div>
                   <div className="">
-                    <button onClick={handleSkillsAdd} className="text-white bg-purple-600 text-sm px-3 py-2 rounded-md w-full">
+                    <button onClick={handleSkillsAdd} className="text-white bg-purple-600 text-sm px-3 py-2 rounded-md w-full inline-flex items-center justify-center gap-2">
+                     {isSkillSaving?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
                       <i class="fa-regular fa-floppy-disk text-sm pr-2"></i>Save
                       Changes & Add Skills
                     </button>
@@ -521,7 +529,29 @@ function Editprofile() {
         <Search />
       </div>
 
-      <div className="py-6 px-4 bg-gray-50 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3">
+      <div className="py-6 px-4 bg-gray-50 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3 h-screen">
+        {isMainLoading?
+         <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
+  <div class="animate-pulse flex flex-col space-x-4 items-center ">
+    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+    <div class="flex-1 space-y-6 py-1 w-[150%]">
+      <div class="h-4 bg-gray-300 rounded"></div>
+      <div class="space-y-3">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+        </div>
+        <div class="h-4 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+</div>
+        :
+        
+        <div>
+
+        
         <Link
           to={"/profile"}
           className="inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
@@ -571,6 +601,8 @@ function Editprofile() {
           </div>
           <div>{renderContent()}</div>
         </div>
+      </div>
+}
       </div>
     </div>
   );

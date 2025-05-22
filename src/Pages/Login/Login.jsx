@@ -12,6 +12,7 @@ function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inputType, setInputType] = useState("password");
+  const [isLoading,setIsLoading]= useState(false)
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ function Signin() {
     } else {
       document.getElementById("pass_error").innerHTML = "";
     }
+    setIsLoading(true)
     axiosInstencs
       .post("/login", {
         email: email,
@@ -44,7 +46,7 @@ function Signin() {
         const userId = res.data.id;
         const skill = res.data.skills;
         // console.log(skill);
-      
+      setIsLoading(false)
 
         dispatch(setUser(userId));
 
@@ -148,8 +150,8 @@ function Signin() {
                 </Link>
               </div>
             </div>
-            <div className="bg-[#7c3bed] text-center rounded-[10px] mt-[10px] hover:bg-purple-700">
-              <button className="text-sm text-white p-[10px]">Sign in</button>
+            <div className="bg-[#7c3bed] text-center rounded-[10px] mt-[10px] hover:bg-purple-700 ">
+              <button className="text-sm text-white p-[10px] inline-flex items-center justify-center gap-1">{isLoading?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}Sign in</button>
             </div>
           </form>
             <p className="text-center pt-[20px] text-sm">

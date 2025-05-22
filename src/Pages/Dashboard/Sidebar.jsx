@@ -14,6 +14,7 @@ function Sidebar() {
   // const [userID,setUserID]= useState("")
   const [isOpen,setIsOpen]= useState("isClose")
   const [openToggle,setOpenToggle]= useState("isClose")
+  const [isLoading,setIsLoading] = useState(false)
   const navigats = [
     { name: "Home", to: "/dashboard", icon: " bx bx-home" },
     { name: "Chat", to: "/chat", icon: " bx bx-chat" },
@@ -33,12 +34,14 @@ function Sidebar() {
     socket.emit('login',userID)
   },[userID])
    useEffect(()=>{
+    setIsLoading(true)
     axiosInstencs.get(`/singleuser/${userID}`,{
       headers:{
         "Authorization" :`Bearer ${access_token}`
       }
     }).then((res)=>{
       setUser(res.data.msg)
+      setIsLoading(false)
       
     }).catch((err)=>console.log(err))
    },[userID,access_token])
@@ -101,6 +104,23 @@ const logOut =()=>{
       <button onClick={logOut} className="inline-flex items-center px-2 rounded-sm text-gray-700 hover:bg-gray-100 py-2 text-sm"><i className="fa-solid fa-arrow-right-from-bracket pr-3.5"></i>Log out</button>
       </div>
       :""}
+      {isLoading?
+    <div class=" border-t p-4 pt-3 max-w-sm w-full mx-auto">
+  <div class="animate-pulse flex space-x-4">
+    <div class="rounded-full bg-gray-300 h-10 w-10"></div>
+    <div class="flex-1 space-y-3 py-1">
+      <div class="h-2 bg-gray-300 rounded"></div>
+      
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+          <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+:  
+    
       <div className="border-t p-2 pb-3 ">
         <div onClick={()=>setIsOpen((prev)=>prev === "isClose" ? "isOpen":"isClose")} className="hover:bg-gray-100 rounded-md max-lg:hover:bg-white">
 
@@ -117,6 +137,7 @@ const logOut =()=>{
         </button>
             </div>
       </div>
+      }
     </div>
     </div>
   );

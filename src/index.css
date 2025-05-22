@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.shimmer-bg {
+  background: linear-gradient(
+    to right,
+    #e2e8f0 4%,
+    #cbd5e1 25%,
+    #e2e8f0 36%
+  );
+  background-size: 1000px 100%;
+  position: relative;
+  overflow: hidden;
+}

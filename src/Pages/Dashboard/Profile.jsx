@@ -15,6 +15,7 @@ function Profile() {
   const [activeTab, setActiveTab] = useState("profile");
   // const [userID, setUserID] = useState("");
   const [user, setUser] = useState([]);
+  const [isLoading,setIsLoading]= useState(false)
   // const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState("");
   const addLanguage = (e) => {
     e.preventDefault();
@@ -34,12 +35,14 @@ function Profile() {
   // console.log(userID);
 
   useEffect(() => {
+    setIsLoading(true)
     axiosInstencs.get(`/singleuser/${userID}`,{
       headers:{
         "Authorization" :`Bearer ${access_token}`
       }
     }).then((res) => {
       setUser(res.data.msg);
+      setIsLoading(false)
     });
   }, [userID,access_token]);
   // console.log(skills);
@@ -249,7 +252,26 @@ function Profile() {
       <div className="fixed w-[83%] z-20 ml-[224px] max-lg:ml-0 max-lg:w-full">
         <Search />
       </div>
-      <div className="bg-gray-50 py-6 px-4 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3">
+      <div className={`bg-gray-50 py-6 px-4 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3 ${isLoading?"h-screen":""}`}>
+        {isLoading?
+        <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
+  <div class="animate-pulse flex flex-col space-x-4 items-center ">
+    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+    <div class="flex-1 space-y-6 py-1 w-[150%]">
+      <div class="h-4 bg-gray-300 rounded"></div>
+      <div class="space-y-3">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+        </div>
+        <div class="h-4 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+</div>
+        :
+        
         <div className="space-y-8 max-sm:space-y-4">
           <div className="">
             
@@ -485,6 +507,7 @@ function Profile() {
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
   );
