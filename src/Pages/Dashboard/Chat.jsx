@@ -99,7 +99,7 @@ function Chat() {
     // console.log("lll");
 
     await axiosInstencs
-      .get(`http://localhost:8020/get/?senderId=${currentUser._id}&receiverId=${id}`)
+      .get(`/get/?senderId=${currentUser._id}&receiverId=${id}`)
       .then((res) => {
         //     const to = new Date()
         // console.log(currentUser._id)

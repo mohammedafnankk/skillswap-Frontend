@@ -6,6 +6,7 @@ const refreshToken = localStorage.getItem("refresh_token");
 
 const axiosInstencs = axios.create({
   baseURL: "https://skillswap-backend-65xf.onrender.com",
+  // baseURL : baseUrl,
 });
 
 axiosInstencs.interceptors.response.use(
