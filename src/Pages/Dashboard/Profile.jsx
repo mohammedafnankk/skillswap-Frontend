@@ -8,14 +8,14 @@ import toast from "react-hot-toast";
 
 function Profile() {
   const access_token = localStorage.getItem("access_token");
-  const userID = localStorage.getItem("id")
+  const userID = localStorage.getItem("id");
   const navigate = useNavigate();
   const inputRef = useRef();
   const [language, setLanguage] = useState([]);
   const [activeTab, setActiveTab] = useState("profile");
   // const [userID, setUserID] = useState("");
   const [user, setUser] = useState([]);
-  const [isLoading,setIsLoading]= useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   // const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState("");
   const addLanguage = (e) => {
     e.preventDefault();
@@ -35,16 +35,18 @@ function Profile() {
   // console.log(userID);
 
   useEffect(() => {
-    setIsLoading(true)
-    axiosInstencs.get(`/singleuser/${userID}`,{
-      headers:{
-        "Authorization" :`Bearer ${access_token}`
-      }
-    }).then((res) => {
-      setUser(res.data.msg);
-      setIsLoading(false)
-    });
-  }, [userID,access_token]);
+    setIsLoading(true);
+    axiosInstencs
+      .get(`/singleuser/${userID}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then((res) => {
+        setUser(res.data.msg);
+        setIsLoading(false);
+      });
+  }, [userID, access_token]);
   // console.log(skills);
 
   const renderContent = () => {
@@ -252,149 +254,153 @@ function Profile() {
       <div className="fixed w-[83%] z-20 ml-[224px] max-lg:ml-0 max-lg:w-full">
         <Search />
       </div>
-      <div className={`bg-gray-50 py-6 px-4 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3 ${isLoading?"h-screen":""}`}>
-        {isLoading?
-        <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
-  <div class="animate-pulse flex flex-col space-x-4 items-center ">
-    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
-    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
-      <div class="h-4 bg-gray-300 rounded"></div>
-      <div class="space-y-3">
-        <div class="grid grid-cols-3 gap-4">
-          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
-           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-        </div>
-        <div class="h-4 bg-gray-300 rounded"></div>
-      </div>
-    </div>
-  </div>
-</div>
-        :
-        
-        <div className="space-y-8 max-sm:space-y-4">
-          <div className="">
-            
-            <Link
-              to={"/dashboard"}
-              className="hidden max-lg:block max-lg:w-fit inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
-            >
-              <i class="fa-solid fa-arrow-left max-lg:pr-2"></i>Back
-            </Link>
-            <div>
-              <div className="flex justify-between">
-                <h1 className="text-2xl font-bold max-sm:text-md">
-                  My Profile
-                </h1>
-                <button
-                  onClick={() => navigate(`/profile/edit/${userID}`)}
-                  className="bg-purple-600 text-white text-sm rounded-md px-4 py-2 "
-                >
-                  <i class="fa-regular fa-pen-to-square mr-2 max-sm:mr-0"></i>
-                  <span className="max-sm:hidden">Edit Profile</span>
-                </button>
+      <div
+        className={`bg-gray-50 py-6 px-4 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3 ${
+          isLoading ? "h-screen" : ""
+        }`}
+      >
+        {isLoading ? (
+          <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] ">
+            <div class="animate-pulse flex flex-col space-x-4 items-center ">
+              <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+              <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
+                <div class="h-4 bg-gray-300 rounded"></div>
+                <div class="space-y-3">
+                  <div class="grid grid-cols-3 gap-4">
+                    <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                    <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+                    <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                  </div>
+                  <div class="h-4 bg-gray-300 rounded"></div>
+                </div>
               </div>
-              <p className="text-gray-400 max-sm:text-xs">
-                Manage your profile information and account settings
-              </p>
             </div>
-            <div></div>
           </div>
-          <div className="grid grid-cols-3 gap-8 max-md:grid-cols-1">
-            <div className="space-y-6">
-              <div className="rounded-lg border shadow-md bg-white">
-                <div className="p-6 max-sm:p-5">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="relative pb-3">
-                      <img
-                        src={user.avatar ? user.avatar : profileImg}
-                        alt=""
-                        className="w-32 h-32 rounded-full object-cover"
-                      />
-                      <span
-                        className="cursor-pointer"
-                        onClick={() => toast("Edit your Profile")}
-                      >
-                        <i class="absolute left-24 top-20 fa-solid fa-camera bg-purple-600 text-white rounded-full p-3"></i>
-                      </span>
-                    </div>
-                    <h2 className="text-2xl font-bold">{user.username}</h2>
-                    <p className="text-gray-400">{user.role}</p>
-                    <p className="text-sm text-gray-400 mb-4">{user.company}</p>
-                    <div className="flex justify-center flex-col gap-2 mb-6">
-                      <div className="rounded-full border px-2.5 py-0.5 text-xs flex items-center font-meduim">
-                        <i class="fa-solid fa-location-dot mr-2"></i>
-                        {user.address && user.address.length > 0
-                          ? user.address[0].street
-                          : ""}
-                      </div>
-
-                      <div className="rounded-full border px-2.5 py-0.5 text-xs flex items-center font-meduim">
-                        <i class="fa-regular fa-calendar mr-2"></i>Joined{" "}
-                        {user.joined_date}
-                      </div>
-                    </div>
-                    {user.role === "Mentor" ? (
-                      <div className="rounded-md border w-full">
-                        <Link
-                          to={`/mentor/${user._id}`}
-                          className="inline-flex items-center justify-center py-2 px-4 w-full text-sm font-semibold"
+        ) : (
+          <div className="space-y-8 max-sm:space-y-4">
+            <div className="">
+              <Link
+                to={"/dashboard"}
+                className="hidden max-lg:block max-lg:w-fit inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
+              >
+                <i class="fa-solid fa-arrow-left max-lg:pr-2"></i>Back
+              </Link>
+              <div>
+                <div className="flex justify-between">
+                  <h1 className="text-2xl font-bold max-sm:text-md">
+                    My Profile
+                  </h1>
+                  <button
+                    onClick={() => navigate(`/profile/edit/${userID}`)}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-md px-4 py-2 "
+                  >
+                    <i class="fa-regular fa-pen-to-square mr-2 max-sm:mr-0"></i>
+                    <span className="max-sm:hidden">Edit Profile</span>
+                  </button>
+                </div>
+                <p className="text-gray-400 max-sm:text-xs">
+                  Manage your profile information and account settings
+                </p>
+              </div>
+              <div></div>
+            </div>
+            <div className="grid grid-cols-3 gap-8 max-md:grid-cols-1">
+              <div className="space-y-6">
+                <div className="rounded-lg border shadow-md bg-white">
+                  <div className="p-6 max-sm:p-5">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="relative pb-3">
+                        <img
+                          src={user.avatar ? user.avatar : profileImg}
+                          alt=""
+                          className="w-32 h-32 rounded-full object-cover"
+                        />
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => toast("Edit your Profile")}
                         >
-                          <i className="bx bx-user pr-2 font-semibold"></i>View
-                          Public Profile
+                          <i class="absolute left-24 top-20 fa-solid fa-camera bg-purple-600 text-white rounded-full p-3"></i>
+                        </span>
+                      </div>
+                      <h2 className="text-2xl font-bold">{user.username}</h2>
+                      <p className="text-gray-400">{user.role}</p>
+                      <p className="text-sm text-gray-400 mb-4">
+                        {user.company}
+                      </p>
+                      <div className="flex justify-center flex-col gap-2 mb-6">
+                        <div className="rounded-full border px-2.5 py-0.5 text-xs flex items-center font-meduim">
+                          <i class="fa-solid fa-location-dot mr-2"></i>
+                          {user.address && user.address.length > 0
+                            ? user.address[0].street
+                            : ""}
+                        </div>
+
+                        <div className="rounded-full border px-2.5 py-0.5 text-xs flex items-center font-meduim">
+                          <i class="fa-regular fa-calendar mr-2"></i>Joined{" "}
+                          {user.joined_date}
+                        </div>
+                      </div>
+                      {user.role === "Mentor" ? (
+                        <div className="rounded-md border w-full">
+                          <Link
+                            to={`/mentor/${user._id}/${user._id}`}
+                            className="inline-flex items-center justify-center py-2 px-4 w-full text-sm font-semibold"
+                          >
+                            <i className="bx bx-user pr-2 font-semibold"></i>
+                            View Public Profile
+                          </Link>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {user.role === "Mentor" ? (
+                  <div className="rounded-lg shadow-md border bg-white">
+                    <div className="space-y-1.5 p-6">
+                      <h2 className="text-2xl font-semibold ">
+                        Contact Information
+                      </h2>
+                    </div>
+                    <div className="p-6 pt-0 space-y-4">
+                      <div className="flex items-center">
+                        <i class="fa-solid fa-envelope text-[#64748b] mr-2"></i>
+                        <span>{user.email}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <i class="fa-solid fa-globe mr-2 text-[#64748b]"></i>
+                        <Link
+                          to={`https://${user.website}`}
+                          className="text-purple-600 hover:underline"
+                        >
+                          Personal Website
                         </Link>
                       </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </div>
-              </div>
-              {user.role === "Mentor" ? (
-                <div className="rounded-lg shadow-md border bg-white">
-                  <div className="space-y-1.5 p-6">
-                    <h2 className="text-2xl font-semibold ">
-                      Contact Information
-                    </h2>
-                  </div>
-                  <div className="p-6 pt-0 space-y-4">
-                    <div className="flex items-center">
-                      <i class="fa-solid fa-envelope text-[#64748b] mr-2"></i>
-                      <span>{user.email}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <i class="fa-solid fa-globe mr-2 text-[#64748b]"></i>
-                      <Link
-                        to={`https://${user.website}`}
-                        className="text-purple-600 hover:underline"
-                      >
-                        Personal Website
-                      </Link>
-                    </div>
-                    <div className="flex items-center">
-                      <i class="fa-solid fa-building mr-2 text-[#64748b]"></i>
-                      <span className="">{user.company}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <i class="fa-solid fa-graduation-cap mr-2 text-[#64748b]"></i>
-                      <span className="">{user.education}</span>
+                      <div className="flex items-center">
+                        <i class="fa-solid fa-building mr-2 text-[#64748b]"></i>
+                        <span className="">{user.company}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <i class="fa-solid fa-graduation-cap mr-2 text-[#64748b]"></i>
+                        <span className="">{user.education}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                ""
-              )}
-              {user.role === "Mentor" ? (
-                <div className="rounded-lg shadow-md border bg-white">
-                  <div className="p-6">
-                    <div className="space-y-1.5 pb-6 flex justify-between items-center">
-                      <h1 className="text-2xl font-semibold">Languages</h1>
-                      <button onClick={() => inputRef.current?.focus()}>
+                ) : (
+                  ""
+                )}
+                {user.role === "Mentor" ? (
+                  <div className="rounded-lg shadow-md border bg-white">
+                    <div className="p-6">
+                      <div className="space-y-1.5 pb-6 flex justify-between items-center">
+                        <h1 className="text-2xl font-semibold">Languages</h1>
+                        {/* <button onClick={() => inputRef.current?.focus()}>
                         <i class="fa-solid fa-plus text-sm hover:bg-slate-200	px-3 py-2 rounded-md"></i>
-                      </button>
-                    </div>
+                      </button> */}
+                      </div>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
+                      {/* <div className="flex flex-wrap gap-2 mb-4">
                       <div
                         className={`rounded-full px-1.5 pl-2.5 py-0.5 text-xs ${
                           language.length === 0 ? "" : "bg-gray-200 flex gap-2"
@@ -407,9 +413,9 @@ function Profile() {
                           <i class="fa-solid fa-xmark flex items-center cursor-pointer hover:bg-red-500 hover:text-white rounded-full p-0.5 px-1"></i>
                         )}
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div
+                      {/* <div
                       className="flex justify-between gap-2"
                       onSubmit={addLanguage}
                     >
@@ -425,13 +431,23 @@ function Profile() {
                       <button className="text-white bg-purple-600 px-3 py-2 rounded-md">
                         Add
                       </button>
+                    </div> */}
+                      <div className="flex text-xs gap-2">
+                        {user.languages.map((l, i) => (
+                          <div
+                            key={i}
+                            className="rounded-full bg-gray-200 text-xs px-2 py-1"
+                          >
+                            {l}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                ""
-              )}
-              {/* <div className="rounded-lg shadow-md border bg-white">
+                ) : (
+                  ""
+                )}
+                {/* <div className="rounded-lg shadow-md border bg-white">
                 <div className="p-6">
                   <div className="pb-6">
                     <h2 className="text-2xl font-semibold">Account</h2>
@@ -472,29 +488,29 @@ function Profile() {
               ) : (
                 ""
               )} */}
-            </div>
-            <div
-              className="col-start-2 col-end-4 max-md:col-start-1 max-md:col-end-1"
-              defaultValue="profile"
-            >
-              <div className="grid grid-cols-2 bg-gray-200 p-1 rounded-md mb-6">
-                <button
-                  onClick={() => setActiveTab("profile")}
-                  className={`rounded-sm px-3 py-1.5 text-sm ${
-                    activeTab === "profile" ? "bg-white" : "text-gray-500"
-                  } `}
-                >
-                  Profile
-                </button>
-                <button
-                  onClick={() => setActiveTab("skills")}
-                  className={`rounded-sm px-3 py-1.5 text-sm ${
-                    activeTab === "skills" ? "bg-white" : "text-gray-500"
-                  } `}
-                >
-                  Skills
-                </button>
-                {/* <button
+              </div>
+              <div
+                className="col-start-2 col-end-4 max-md:col-start-1 max-md:col-end-1"
+                defaultValue="profile"
+              >
+                <div className="grid grid-cols-2 bg-gray-200 p-1 rounded-md mb-6">
+                  <button
+                    onClick={() => setActiveTab("profile")}
+                    className={`rounded-sm px-3 py-1.5 text-sm ${
+                      activeTab === "profile" ? "bg-white" : "text-gray-500"
+                    } `}
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("skills")}
+                    className={`rounded-sm px-3 py-1.5 text-sm ${
+                      activeTab === "skills" ? "bg-white" : "text-gray-500"
+                    } `}
+                  >
+                    Skills
+                  </button>
+                  {/* <button
                   onClick={() => setActiveTab("settings")}
                   className={`rounded-sm px-3 py-1.5 text-sm ${
                     activeTab === "settings" ? "bg-white" : "text-gray-500"
@@ -502,12 +518,12 @@ function Profile() {
                 >
                   Settings
                 </button> */}
+                </div>
+                <div>{renderContent()}</div>
               </div>
-              <div>{renderContent()}</div>
             </div>
           </div>
-        </div>
-        }
+        )}
       </div>
     </div>
   );

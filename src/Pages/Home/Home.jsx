@@ -21,7 +21,10 @@ function Home() {
       <Navbar start="#getstart" works="#works" />
 
       <main>
-        <section id="home" className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-20 max-sm:pb-10">
+        <section
+          id="home"
+          className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-20 max-sm:pb-10"
+        >
           <div className=" px-4 grid grid-cols-2 max-md:grid-cols-1 max-sm:px-5">
             <div className="flex items-center max-md:mb-6">
               <div>
@@ -411,11 +414,9 @@ function Home() {
                 className="inline-flex items-center font-bold mb-2"
               >
                 <i class="fa-solid fa-graduation-cap text-3xl  pr-1"></i>
-                <h1 className="font-sans text-xl font-bold  ">
-                  SkillSwap
-                </h1>
+                <h1 className="font-sans text-xl font-bold  ">SkillSwap</h1>
               </a>
-             
+
               <p className="text-gray-400 mb-4">
                 Connecting mentors and learners in a collaborative community.
               </p>

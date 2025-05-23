@@ -17,7 +17,7 @@ function Editprofile() {
   const [skills, setSkills] = useState([]);
   let { id } = useParams();
   const navigate = useNavigate();
-  const access_token = localStorage.getItem("access_token")
+  const access_token = localStorage.getItem("access_token");
   const [activeTab, setActiveTab] = useState("basic-info");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,10 +29,12 @@ function Editprofile() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [avatar, setAvatar] = useState([]);
-  const [isLoading,setIsLoading] = useState(false)
-  const [isMainLoading,setIsMainLoading]= useState(false)
-  const [isSaving,setIsSaving] = useState(false)
-  const [isSkillSaving,setIsSkillSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMainLoading, setIsMainLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSkillSaving, setIsSkillSaving] = useState(false);
+  const [selectedLanguages, setSelectedLanguage] = useState([]);
+  const [lang, setLang] = useState([]);
   const options = [
     { value: "React.js", label: "ReactJS" },
     { value: "JavaScript", label: "JavaScript" },
@@ -43,6 +45,11 @@ function Editprofile() {
     { value: "Java", label: "Java" },
     { value: "C#", label: "C#" },
   ];
+  const languages = [
+    { value: "English", label: "English" },
+    { value: "Malayalam", label: "Malayalam" },
+    { value: "Spanish", label: "Spanish" },
+  ];
 
   const handleChange = (newValue) => {
     const values = newValue.map((skill) => skill.value);
@@ -52,14 +59,21 @@ function Editprofile() {
     setSkills(values);
   };
   console.log(skills);
-  
+  console.log(lang);
+
+  const handleLanguageChange = (newValue) => {
+    const lng = newValue.map((l) => l.value);
+    setSelectedLanguage(newValue);
+    setLang(lng);
+  };
+
   useEffect(() => {
-    setIsMainLoading(true)
+    setIsMainLoading(true);
     axiosInstencs
-      .get(`/singleuser/${id}`,{
-        headers:{
-          "Authorization" :`Bearer ${access_token}`
-        }
+      .get(`/singleuser/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
       })
       .then((res) => {
         // console.log(res.data);
@@ -72,10 +86,11 @@ function Editprofile() {
         setBio(res.data.msg.bio);
         setCompany(res.data.msg.company);
         setWebsite(res.data.msg.website);
-        setIsMainLoading(false)
+        setIsMainLoading(false);
+        setLang(res.data.msg.languages);
       })
       .catch((err) => console.log(err));
-  }, [id,access_token]);
+  }, [id, access_token]);
   // console.log(avatar);
 
   const customStyles = {
@@ -128,26 +143,27 @@ function Editprofile() {
   const handleAvatarChange = async (e) => {
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-     formData.append("upload_preset", "skillswap_user_avatar")
-     setIsLoading(true)
-   await axiosInstencs.
+    formData.append("upload_preset", "skillswap_user_avatar");
+    setIsLoading(true);
+    await axiosInstencs
       // .post(`/avatarupload`, formData, {
       //   headers: {
       //     "Content-Type": "multipart/form-data",
       //   },
       // })
-       post("https://api.cloudinary.com/v1_1/dy53k65i2/image/upload",formData)
+      .post("https://api.cloudinary.com/v1_1/dy53k65i2/image/upload", formData)
       .then((res) => {
         console.log(res.data.secure_url);
-        setIsLoading(false)
+        setIsLoading(false);
         axiosInstencs
           .patch(`/personalinfo/${id}`, {
             avatar: res.data.secure_url,
           })
           .then((res) => {
             console.log(res.data);
-            window.location.reload()
-          }).catch((err)=>console.log("err",err))
+            window.location.reload();
+          })
+          .catch((err) => console.log("err", err));
       })
       .catch((err) => console.log(err));
   };
@@ -191,8 +207,14 @@ function Editprofile() {
       } else {
         document.getElementById("bio-require").style.color = "#6b7280";
       }
+      if (selectedLanguages.length <= 0) {
+        return (document.getElementById("language-require").innerHTML =
+          "*Please selecte your languages");
+      } else {
+        document.getElementById("language-require").innerHTML = "";
+      }
     }
-   setIsSaving(true)
+    setIsSaving(true);
     axiosInstencs
       .patch(`/personalinfo/${id}`, {
         username: userName,
@@ -201,13 +223,14 @@ function Editprofile() {
         bio: bio,
         company: company,
         website: website,
+        languages: lang,
       })
       .then((res) => {
         // console.log(res);
         toast.success("Basic Info Updated");
         // navigate("/profile");
-        setActiveTab("skills")
-        setIsSaving(false)
+        setActiveTab("skills");
+        setIsSaving(false);
       })
       .catch((err) => console.log(err));
   };
@@ -218,18 +241,21 @@ function Editprofile() {
   //   console.log(updatedSkills);
   // };
 
-  const handleSkillsAdd =(e)=>{
-    setIsSkillSaving(true)
-    e.preventDefault()
-    axiosInstencs.patch(`/personalinfo/${id}`,{
-    skills:skills
-    }).then((res)=>{
-      console.log(res.data);
-      toast.success("Skills Updated")
-      setIsSkillSaving(false)
-      setActiveTab("basic-info")
-    }).catch((err)=>console.log(err))
-  }
+  const handleSkillsAdd = (e) => {
+    setIsSkillSaving(true);
+    e.preventDefault();
+    axiosInstencs
+      .patch(`/personalinfo/${id}`, {
+        skills: skills,
+      })
+      .then((res) => {
+        console.log(res.data);
+        toast.success("Skills Updated");
+        setIsSkillSaving(false);
+        setActiveTab("basic-info");
+      })
+      .catch((err) => console.log(err));
+  };
   const renderContent = () => {
     switch (activeTab) {
       case "basic-info":
@@ -247,7 +273,7 @@ function Editprofile() {
                 <div className="flex gap-6 max-sm:flex-col max-sm:items-center">
                   <span>
                     <img
-                      src={avatar.avatar? avatar.avatar :profileImg }
+                      src={avatar.avatar ? avatar.avatar : profileImg}
                       alt=""
                       className="rounded-full h-32 w-32 object-cover"
                     />
@@ -262,20 +288,19 @@ function Editprofile() {
                         className="hidden"
                       />
 
-                      <label
-                        type="submit"
-                        htmlFor="file-upload"
-                        
-                      >
-                        {isLoading === false?
-                        <p className="cursor-pointer w-full hover:bg-slate-100 text-sm px-4 py-2 border rounded-md"> <i class="fa-solid fa-arrow-up-from-bracket pr-2"></i>
-                        Upload New Picture</p>
-                        :
-                        <p className="inline-flex gap-3 items-center text-sm px-4 py-2 border rounded-md"><p className="h-4 w-4 border-black border-2 border-t-transparent rounded-full animate-spin"></p>Uploading</p>
-
-                        }
-                        
-                  
+                      <label type="submit" htmlFor="file-upload">
+                        {isLoading === false ? (
+                          <p className="cursor-pointer w-full hover:bg-slate-100 text-sm px-4 py-2 border rounded-md">
+                            {" "}
+                            <i class="fa-solid fa-arrow-up-from-bracket pr-2"></i>
+                            Upload New Picture
+                          </p>
+                        ) : (
+                          <p className="inline-flex gap-3 items-center text-sm px-4 py-2 border rounded-md">
+                            <p className="h-4 w-4 border-black border-2 border-t-transparent rounded-full animate-spin"></p>
+                            Uploading
+                          </p>
+                        )}
                       </label>
                     </form>
                     <button
@@ -295,7 +320,10 @@ function Editprofile() {
                   Update your personal information
                 </p>
               </div>
-              <form action="" className="grid grid-cols-2 p-6 gap-6 max-md:grid-cols-1 max-sm:block max-sm:p-5 ">
+              <form
+                action=""
+                className="grid grid-cols-2 p-6 gap-6 max-md:grid-cols-1 max-sm:block max-sm:p-5 "
+              >
                 <div className="flex flex-col space-y-2 max-sm:mb-1 max-sm:space-y-1">
                   <label htmlFor="" className="text-sm font-medium">
                     Full Name
@@ -390,6 +418,29 @@ function Editprofile() {
                 ) : (
                   ""
                 )}
+                {role === "Mentor" ? (
+                  <div className="flex flex-col space-y-2 max-sm:mb-1 max-sm:space-y-1">
+                    <label htmlFor="" className="text-sm font-medium">
+                      Languages
+                    </label>
+                    <CreatableSelect
+                      defaultValue={languages}
+                      isMulti
+                      options={languages}
+                      value={selectedLanguages}
+                      onChange={handleLanguageChange}
+                      placeholder="Select or type to Languages..."
+                      className="text-[13px]"
+                      styles={customStyles}
+                    />
+                    <span
+                      id="language-require"
+                      className="text-xs text-red-600"
+                    ></span>
+                  </div>
+                ) : (
+                  ""
+                )}
                 {role === "Student" ? (
                   <button
                     onClick={saveChangesHandler}
@@ -421,7 +472,12 @@ function Editprofile() {
                     <button
                       onClick={saveChangesHandler}
                       className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2"
-                    >{isSaving?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
+                    >
+                      {isSaving ? (
+                        <p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>
+                      ) : (
+                        ""
+                      )}
                       <i class="fa-regular fa-floppy-disk"></i>Save Changes
                     </button>
                   </div>
@@ -464,7 +520,9 @@ function Editprofile() {
                 ))}
                 <div className="border-b-2"></div>
                 <div className="space-y-4">
-                  <h3 className="font-medium">Select or type to skills & delete</h3>
+                  <h3 className="font-medium">
+                    Select or type to skills & delete
+                  </h3>
                   <div className="">
                     {/* <div className="flex flex-col">
                       <label htmlFor="" className="text-sm">
@@ -503,8 +561,15 @@ function Editprofile() {
                     />
                   </div>
                   <div className="">
-                    <button onClick={handleSkillsAdd} className="text-white bg-purple-600 text-sm px-3 py-2 rounded-md w-full inline-flex items-center justify-center gap-2">
-                     {isSkillSaving?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
+                    <button
+                      onClick={handleSkillsAdd}
+                      className="text-white bg-purple-600 text-sm px-3 py-2 rounded-md w-full inline-flex items-center justify-center gap-2"
+                    >
+                      {isSkillSaving ? (
+                        <p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>
+                      ) : (
+                        ""
+                      )}
                       <i class="fa-regular fa-floppy-disk text-sm pr-2"></i>Save
                       Changes & Add Skills
                     </button>
@@ -530,67 +595,64 @@ function Editprofile() {
       </div>
 
       <div className="py-6 px-4 bg-gray-50 pt-24 ml-[224px] max-lg:ml-0 max-sm:px-3 h-screen">
-        {isMainLoading?
-         <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
-  <div class="animate-pulse flex flex-col space-x-4 items-center ">
-    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
-    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
-      <div class="h-4 bg-gray-300 rounded"></div>
-      <div class="space-y-3">
-        <div class="grid grid-cols-3 gap-4">
-          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
-           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-        </div>
-        <div class="h-4 bg-gray-300 rounded"></div>
-      </div>
-    </div>
-  </div>
-</div>
-        :
-        
-        <div>
-
-        
-        <Link
-          to={"/profile"}
-          className="inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
-        >
-          <i class="fa-solid fa-arrow-left"></i>Back to Profile
-        </Link>
-        <div className="space-y-8 max-sm:space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">Edit Profile</h1>
-              <p className="text-gray-500 max-sm:text-xs">
-                Update your personal information and preferences
-              </p>
+        {isMainLoading ? (
+          <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] ">
+            <div class="animate-pulse flex flex-col space-x-4 items-center ">
+              <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+              <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
+                <div class="h-4 bg-gray-300 rounded"></div>
+                <div class="space-y-3">
+                  <div class="grid grid-cols-3 gap-4">
+                    <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                    <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+                    <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                  </div>
+                  <div class="h-4 bg-gray-300 rounded"></div>
+                </div>
+              </div>
             </div>
-            {/* <button
+          </div>
+        ) : (
+          <div>
+            <Link
+              to={"/profile"}
+              className="inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
+            >
+              <i class="fa-solid fa-arrow-left"></i>Back to Profile
+            </Link>
+            <div className="space-y-8 max-sm:space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold">Edit Profile</h1>
+                  <p className="text-gray-500 max-sm:text-xs">
+                    Update your personal information and preferences
+                  </p>
+                </div>
+                {/* <button
               onClick={saveChangesHandler}
               className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2"
             >
               <i class="fa-regular fa-floppy-disk"></i>Save Changes
             </button> */}
-          </div>
-          <div className="grid grid-cols-2 bg-gray-200 p-1 rounded-md mb-6">
-            <button
-              onClick={() => setActiveTab("basic-info")}
-              className={`rounded-sm px-3 py-1.5 text-sm ${
-                activeTab === "basic-info" ? "bg-white" : "text-gray-500"
-              } `}
-            >
-              Basic Info
-            </button>
-            <button
-              onClick={() => setActiveTab("skills")}
-              className={`rounded-sm px-3 py-1.5 text-sm ${
-                activeTab === "skills" ? "bg-white" : "text-gray-500"
-              } `}
-            >
-              Skills & Interests
-            </button>
-            {/* <button
+              </div>
+              <div className="grid grid-cols-2 bg-gray-200 p-1 rounded-md mb-6">
+                <button
+                  onClick={() => setActiveTab("basic-info")}
+                  className={`rounded-sm px-3 py-1.5 text-sm ${
+                    activeTab === "basic-info" ? "bg-white" : "text-gray-500"
+                  } `}
+                >
+                  Basic Info
+                </button>
+                <button
+                  onClick={() => setActiveTab("skills")}
+                  className={`rounded-sm px-3 py-1.5 text-sm ${
+                    activeTab === "skills" ? "bg-white" : "text-gray-500"
+                  } `}
+                >
+                  Skills & Interests
+                </button>
+                {/* <button
               onClick={() => setActiveTab("education")}
               className={`rounded-sm px-3 py-1.5 text-sm ${
                 activeTab === "education" ? "bg-white" : "text-gray-500"
@@ -598,11 +660,11 @@ function Editprofile() {
             >
               Education & Certifications
             </button> */}
+              </div>
+              <div>{renderContent()}</div>
+            </div>
           </div>
-          <div>{renderContent()}</div>
-        </div>
-      </div>
-}
+        )}
       </div>
     </div>
   );

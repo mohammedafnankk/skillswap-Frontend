@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import Search from './Search'
-import Sidebar from './Sidebar'
-import profileImg from '../../assets/images/user.jpg'
-import axiosInstencs from '../../axios/axiosInstence'
-import { Link, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import Search from "./Search";
+import Sidebar from "./Sidebar";
+import profileImg from "../../assets/images/user.jpg";
+import axiosInstencs from "../../axios/axiosInstence";
+import { Link, useParams } from "react-router-dom";
 
 function Allmentors() {
-    const {id} = useParams()
-const [mentor ,setMentor]= useState([])
-const access_token = localStorage.getItem("access_token")
-const [isLoading,setIsLoading]= useState(false)
+  const { id } = useParams();
+  const [mentor, setMentor] = useState([]);
+  const access_token = localStorage.getItem("access_token");
+  const [isLoading, setIsLoading] = useState(false);
 
-
-useEffect(()=>{
-  setIsLoading(true)
-    axiosInstencs.get('/allmentors',{
-      headers:{
-        "Authorization" :`Bearer ${access_token}`
-      }
-    }).then((res)=>{
+  useEffect(() => {
+    setIsLoading(true);
+    axiosInstencs
+      .get("/allmentors", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then((res) => {
         console.log(res.data);
-        setMentor(res.data.allMentors)
-        setIsLoading(false)
-    }).catch((err)=>console.log(err))
-},[access_token])
-
+        setMentor(res.data.allMentors);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, [access_token]);
 
   return (
     <div>
@@ -34,89 +35,92 @@ useEffect(()=>{
       <div className="fixed w-[83%] z-20 ml-[224px] max-lg:ml-0 max-lg:w-full">
         <Search />
       </div>
-      <div className=' ml-[224px] max-lg:ml-0 pt-24 bg-gray-50 pb-8 h-screen'>
+      <div className=" ml-[224px] max-lg:ml-0 pt-24 bg-gray-50 pb-8 h-screen">
         <Link
-                  to={-1}
-                  className="mx-6 max-sm:mx-4 inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
-                >
-                  <i class="fa-solid fa-arrow-left"></i>Back
-                </Link>
+          to={-1}
+          className="mx-6 max-sm:mx-4 inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
+        >
+          <i class="fa-solid fa-arrow-left"></i>Back
+        </Link>
         <section>
-                  
-                  <div className="flex justify-between mb-6 items-center max-sm:mb-3 px-6 max-sm:px-4">
-                    <h2 className="text-2xl font-semibold">All Mentors</h2>
-                    {/* <button className="rounded-md px-[20px] py-[10px] text-purple-700 hover:bg-gray-100 text-sm">
+          <div className="flex justify-between mb-6 items-center max-sm:mb-3 px-6 max-sm:px-4">
+            <h2 className="text-2xl font-semibold">All Mentors</h2>
+            {/* <button className="rounded-md px-[20px] py-[10px] text-purple-700 hover:bg-gray-100 text-sm">
                       View all <i class="fa-solid fa-arrow-right pl-2"></i>
                     </button> */}
+          </div>
+          {isLoading ? (
+            <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] ">
+              <div class="animate-pulse flex flex-col space-x-4 items-center ">
+                <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+                <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
+                  <div class="h-4 bg-gray-300 rounded"></div>
+                  <div class="space-y-3">
+                    <div class="grid grid-cols-3 gap-4">
+                      <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                      <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+                      <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+                    </div>
+                    <div class="h-4 bg-gray-300 rounded"></div>
                   </div>
-                  {isLoading?
-                   <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
-  <div class="animate-pulse flex flex-col space-x-4 items-center ">
-    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
-    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
-      <div class="h-4 bg-gray-300 rounded"></div>
-      <div class="space-y-3">
-        <div class="grid grid-cols-3 gap-4">
-          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
-           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
-        </div>
-        <div class="h-4 bg-gray-300 rounded"></div>
-      </div>
-    </div>
-  </div>
-</div>
-                  :
-                  
-                  
-                  <div className="grid grid-cols-2 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1 px-6 max-sm:px-4">
-                    {mentor.map((m,i)=>(
-        
-                      <div key={i} className="rounded-lg border shadow-sm hover:shadow-md transition-shadow bg-white">
-                      <div className="p-6 max-sm:p-3">
-                        <div className="flex items-start space-x-4">
-                          <span className="relative">
-                            <img
-                              src={m.avatar?m.avatar:profileImg}
-                              alt=""
-                              className="h-16 w-16 overflow-hidden rounded-full border-2 border-purple-100 object-cover"
-                            />
-                          </span>
-                          <div>
-                            <h2 className="font-bold text-lg">{m.username}</h2>
-                            <p className="text-gray-500">Senior Developer</p>
-                            <div></div>
-                          </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1 px-6 max-sm:px-4">
+              {mentor.map((m, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border shadow-sm hover:shadow-md transition-shadow bg-white"
+                >
+                  <div className="p-6 max-sm:p-3">
+                    <div className="flex items-start space-x-4">
+                      <span className="relative">
+                        <img
+                          src={m.avatar ? m.avatar : profileImg}
+                          alt=""
+                          className="h-16 w-16 overflow-hidden rounded-full border-2 border-purple-100 object-cover"
+                        />
+                      </span>
+                      <div>
+                        <h2 className="font-bold text-lg">{m.username}</h2>
+                        <p className="text-gray-500">Senior Developer</p>
+                        <div></div>
+                      </div>
+                    </div>
+                    <div className=" mt-4 grid grid-cols-3 gap-2">
+                      {m.skills.map((s, i) => (
+                        <div
+                          key={i}
+                          className="inlile-flex items-center rounded-full px-2.5 py-0.5 text-xs font-[550] bg-[#f1f5f9] "
+                        >
+                          {s}
                         </div>
-                        <div className=" mt-4 grid grid-cols-3 gap-2">
-                          {m.skills.map((s,i)=>(
-        
-                          <div key={i} className="inlile-flex items-center rounded-full px-2.5 py-0.5 text-xs font-[550] bg-[#f1f5f9] ">
-                            {s}
-                          </div>
-                          ))}
-                          {/* <div className="inlile-flex items-center rounded-full px-2.5 py-0.5 text-xs font-[550] bg-[#f1f5f9] ">
+                      ))}
+                      {/* <div className="inlile-flex items-center rounded-full px-2.5 py-0.5 text-xs font-[550] bg-[#f1f5f9] ">
                             JavaScript
                           </div>
                           <div className="inlile-flex items-center rounded-full px-2.5 py-0.5 text-xs font-[550] bg-[#f1f5f9] ">
                             Node.js
                           </div> */}
-                        </div>
-                      </div>
-                      <div className="flex items-center p-6 pt-0">
-                        <Link to={`/mentor/${m._id}/${id}`} className=" text-white inline-flex items-center justify-center rounded-md text-sm font-[550] bg-purple-600 hover:bg-purple-700 px-4 py-2 w-full">
-                          View Profile
-                        </Link>
-                      </div>
                     </div>
-                    ))}
                   </div>
-}
-                </section>
-
+                  <div className="flex items-center p-6 pt-0">
+                    <Link
+                      to={`/mentor/${m._id}/${id}`}
+                      className=" text-white inline-flex items-center justify-center rounded-md text-sm font-[550] bg-purple-600 hover:bg-purple-700 px-4 py-2 w-full"
+                    >
+                      View Profile
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </div>
-  )
+  );
 }
 
-export default Allmentors
+export default Allmentors;

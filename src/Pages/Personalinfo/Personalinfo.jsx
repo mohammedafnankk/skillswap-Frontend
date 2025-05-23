@@ -21,9 +21,13 @@ const level = [
   { value: "Advanced", label: "Advanced" },
   { value: "Expert", label: "Expert" },
 ];
-
+const languages = [
+  { value: "English", label: "English" },
+  { value: "Malayalam", label: "Malayalam" },
+  { value: "Spanish", label: "Spanish" },
+];
 function Personalinfo() {
-  const access_token = localStorage.getItem("access_token")
+  const access_token = localStorage.getItem("access_token");
   const { id } = useParams();
   const navigate = useNavigate("");
   const [user, setUser] = useState([]);
@@ -40,24 +44,28 @@ function Personalinfo() {
   const [company, setCompany] = useState("");
   const [education, setEducation] = useState("");
   const [bio, setBio] = useState("");
-  const [levels , setLevels] = useState("")
- 
+  const [levels, setLevels] = useState("");
+  const [selectedLanguages, setSelectedLanguage] = useState([]);
+  const [lang, setLang] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (newValue) => {
     const values = newValue.map((skill) => skill.value);
     setSelectedOptions(newValue);
     setSkills(values);
   };
-  
-  const handleSelecteLevel=(e)=>{
-    
+
+  const handleSelecteLevel = (e) => {
     // console.log(e.value);
-    setSelecteLevel(e)
-    setLevels(e.value)
-    
-  }
-//  console.log(levels);
- 
+    setSelecteLevel(e);
+    setLevels(e.value);
+  };
+  //  console.log(levels);
+  const handleLanguageChange = (newValue) => {
+    const lng = newValue.map((l) => l.value);
+    setSelectedLanguage(newValue);
+    setLang(lng);
+  };
 
   const customStyles = {
     control: (base, state) => ({
@@ -98,20 +106,23 @@ function Personalinfo() {
     }),
   };
   useEffect(() => {
-    axiosInstencs.get(`/singleuser/${id}`,{
-       headers:{
-        "Authorization" :`Bearer ${access_token}`
-      }
-    }).then((res) => {
-      // console.log(res.data.msg);
-      const userData = res.data.msg;
-      setUser(userData);
-    }).catch((err)=>console.log(err))
+    axiosInstencs
+      .get(`/singleuser/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then((res) => {
+        // console.log(res.data.msg);
+        const userData = res.data.msg;
+        setUser(userData);
+      })
+      .catch((err) => console.log(err));
   }, [id]);
-  
-const Company =company.charAt(0).toUpperCase()+company.slice(1)
-const Education = education.charAt(0).toUpperCase()+education.slice(1)
-const Bio = bio.charAt(0).toUpperCase().slice(1)
+
+  const Company = company.charAt(0).toUpperCase() + company.slice(1);
+  const Education = education.charAt(0).toUpperCase() + education.slice(1);
+  const Bio = bio.charAt(0).toUpperCase().slice(1);
   const handleInformation = (e) => {
     e.preventDefault();
 
@@ -163,29 +174,33 @@ const Bio = bio.charAt(0).toUpperCase().slice(1)
       document.getElementById("skill_error").innerHTML = "";
     }
     //level
-    if(user.role === "Mentor"){
-
+    if (user.role === "Mentor") {
       if (selecteLevel === "") {
         return (document.getElementById("level_error").innerHTML =
           "*Please select your Proficiency Level");
       } else {
         document.getElementById("level_error").innerHTML = "";
       }
-      if(bio === ""){
-        return document.getElementById("bio-require").style.color="red"
-      }else{
-        document.getElementById("bio-require").style.color=""
+      if (bio === "") {
+        return (document.getElementById("bio-require").style.color = "red");
+      } else {
+        document.getElementById("bio-require").style.color = "";
+      }
+      if (selectedLanguages.length <= 0) {
+        return (document.getElementById("language-require").innerHTML =
+          "*Please select or type to languages");
+      } else {
+        document.getElementById("language-require").innerHTML = "";
       }
     }
-
-
+    setIsLoading(true);
     axiosInstencs
       .patch(`/personalinfo/${id}`, {
-        website:website,
-        company:Company,
-        education:Education,
-        level:levels,
-        bio:bio,
+        website: website,
+        company: Company,
+        education: Education,
+        level: levels,
+        bio: bio,
         address: [
           {
             street: street,
@@ -196,12 +211,13 @@ const Bio = bio.charAt(0).toUpperCase().slice(1)
           },
         ],
         skills: skills,
+        languages: lang,
       })
       .then((res) => {
-        
         console.log(res.data);
+        setIsLoading(false);
         navigate("/dashboard");
-        toast.success("Welcome to SkillSwap")
+        toast.success("Welcome to SkillSwap");
       })
       .catch((Err) => {
         console.log(Err, "==err");
@@ -386,6 +402,28 @@ const Bio = bio.charAt(0).toUpperCase().slice(1)
                         className="text-red-600 text-[13px] pl-[5px]"
                       ></span>
                     </div>
+                    <div className="space-y-1">
+                      <label
+                        htmlFor=""
+                        className="text-sm font-medium ml-[5px]"
+                      >
+                        Languages
+                      </label>
+                      <CreatableSelect
+                        defaultValue={languages}
+                        isMulti
+                        options={languages}
+                        value={selectedLanguages}
+                        onChange={handleLanguageChange}
+                        placeholder="Select or type to Languages..."
+                        className="text-[13px]"
+                        styles={customStyles}
+                      />
+                      <span
+                        id="language-require"
+                        className="text-[13px] text-red-600 pl-[5px]"
+                      ></span>
+                    </div>
                   </div>
                 ) : (
                   ""
@@ -413,47 +451,52 @@ const Bio = bio.charAt(0).toUpperCase().slice(1)
                     id="skill_error"
                     className="text-red-600 text-[13px] pl-[5px]"
                   ></span>
-                  {user.role === "Student"?
-                  
+                  {user.role === "Student" ? (
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-400">
+                        Add skills that represent your expertise or areas you
+                        want to develop.
+                      </p>
+                      <button className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2">
+                        <i class="fa-regular fa-floppy-disk"></i>Save
+                        Information
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+              {user.role === "Mentor" ? (
+                <div className="p-6 rounded-lg shadow-sm border mt-8 ">
+                  <label htmlFor="" className="text-2xl font-semibold ">
+                    Bio
+                  </label>
+                  <textarea
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    name=""
+                    id=""
+                    className="rounded-md border px-3 py-2 text-sm w-full min-h-36 focus:outline-purple-600 mt-2"
+                  ></textarea>
                   <div className="flex justify-between items-center">
-
-                  <p className="text-sm text-gray-400">
-                    Add skills that represent your expertise or areas you want
-                    to develop.
-                  </p>
-                  <button className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2">
-                    <i class="fa-regular fa-floppy-disk"></i>Save Information
-                  </button>
+                    <p id="bio-require" className="text-[0.8rem] text-gray-500">
+                      Write a short bio about yourself, your experience, and
+                      what you're looking to learn or teach.
+                    </p>
+                    <button className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2">
+                      {isLoading ? (
+                        <p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>
+                      ) : (
+                        ""
+                      )}
+                      <i class="fa-regular fa-floppy-disk"></i>Save Information
+                    </button>
                   </div>
-                  :""}
                 </div>
-            
-                
-              </div>
-              {user.role === "Mentor"?
-              
-              <div className="p-6 rounded-lg shadow-sm border mt-8 ">
-                <label htmlFor="" className="text-2xl font-semibold ">
-                  Bio
-                </label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  name=""
-                  id=""
-                  className="rounded-md border px-3 py-2 text-sm w-full min-h-36 focus:outline-purple-600 mt-2"
-                ></textarea>
-                <div className="flex justify-between items-center">
-                  <p id="bio-require" className="text-[0.8rem] text-gray-500">
-                    Write a short bio about yourself, your experience, and what
-                    you're looking to learn or teach.
-                  </p>
-                  <button className="inline-flex text-white text-sm items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md gap-2">
-                    <i class="fa-regular fa-floppy-disk"></i>Save Information
-                  </button>
-                </div>
-              </div>
-              :""}
+              ) : (
+                ""
+              )}
             </form>
           </div>
           {/* <div className="max-sm:row-start-1">
