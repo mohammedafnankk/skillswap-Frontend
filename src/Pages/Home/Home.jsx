@@ -18,7 +18,7 @@ function Home() {
 
   return (
     <div>
-      <Navbar category="#categories" start="#getstart" works="#works" />
+      <Navbar start="#getstart" works="#works" />
 
       <main>
         <section id="home" className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-20 max-sm:pb-10">
@@ -150,7 +150,7 @@ function Home() {
           </div>
         </section>
 
-        <section id="categories" className="py-20 bg-white max-sm:py-10">
+        {/* <section id="categories" className="py-20 bg-white max-sm:py-10">
           <div className="container px-4">
             <div className="text-center mb-16 max-sm:mb-9">
               <h1 className="text-3xl font-bold mb-4 max-sm:mb-2">
@@ -228,7 +228,7 @@ function Home() {
               </Link>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section id="getstart" className="py-20 bg-gray-50 max-sm:py-10">
           <div className="grid grid-cols-2 px-4 gap-16 max-md:grid-cols-1">

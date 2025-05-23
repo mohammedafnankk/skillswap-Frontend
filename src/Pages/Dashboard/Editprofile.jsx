@@ -534,7 +534,7 @@ function Editprofile() {
          <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
   <div class="animate-pulse flex flex-col space-x-4 items-center ">
     <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
-    <div class="flex-1 space-y-6 py-1 w-[150%]">
+    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
       <div class="h-4 bg-gray-300 rounded"></div>
       <div class="space-y-3">
         <div class="grid grid-cols-3 gap-4">

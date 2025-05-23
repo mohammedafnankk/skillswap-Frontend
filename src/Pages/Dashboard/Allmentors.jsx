@@ -9,10 +9,11 @@ function Allmentors() {
     const {id} = useParams()
 const [mentor ,setMentor]= useState([])
 const access_token = localStorage.getItem("access_token")
-
+const [isLoading,setIsLoading]= useState(false)
 
 
 useEffect(()=>{
+  setIsLoading(true)
     axiosInstencs.get('/allmentors',{
       headers:{
         "Authorization" :`Bearer ${access_token}`
@@ -20,7 +21,7 @@ useEffect(()=>{
     }).then((res)=>{
         console.log(res.data);
         setMentor(res.data.allMentors)
-        
+        setIsLoading(false)
     }).catch((err)=>console.log(err))
 },[access_token])
 
@@ -33,7 +34,7 @@ useEffect(()=>{
       <div className="fixed w-[83%] z-20 ml-[224px] max-lg:ml-0 max-lg:w-full">
         <Search />
       </div>
-      <div className=' ml-[224px] max-lg:ml-0 pt-24 bg-gray-50 pb-8'>
+      <div className=' ml-[224px] max-lg:ml-0 pt-24 bg-gray-50 pb-8 h-screen'>
         <Link
                   to={-1}
                   className="mx-6 max-sm:mx-4 inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
@@ -48,6 +49,26 @@ useEffect(()=>{
                       View all <i class="fa-solid fa-arrow-right pl-2"></i>
                     </button> */}
                   </div>
+                  {isLoading?
+                   <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
+  <div class="animate-pulse flex flex-col space-x-4 items-center ">
+    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
+      <div class="h-4 bg-gray-300 rounded"></div>
+      <div class="space-y-3">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+        </div>
+        <div class="h-4 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+</div>
+                  :
+                  
+                  
                   <div className="grid grid-cols-2 gap-5 max-lg:grid-cols-2 max-md:grid-cols-1 px-6 max-sm:px-4">
                     {mentor.map((m,i)=>(
         
@@ -90,6 +111,7 @@ useEffect(()=>{
                     </div>
                     ))}
                   </div>
+}
                 </section>
 
       </div>

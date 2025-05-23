@@ -16,63 +16,13 @@ function MentorProfile() {
   const [mChat, setMchat] = useState([]);
   const [mY, setMy] = useState("");
   const [mIsTrue, setMisTrue] = useState(false);
+  const [isLoading,setIsLoading] = useState(false)
+  const [bio,setBio]= useState("")
   // console.log(id);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "about":
-        return (
-          <div>
-            <div className="rounded-lg border p-6 shadow-md bg-white">
-              <h1 className="text-2xl font-semibold pb-3">About Me</h1>
-              <p>
-                I'm a passionate software engineer with over 8 years of
-                experience in web development. I specialize in React, Node.js,
-                and TypeScript. I love helping others grow their skills and
-                navigate the tech industry.
-              </p>
-            </div>
-          </div>
-        );
-      case "skills":
-        return (
-          <div className="rounded-lg border bg-white shadow-md">
-            <div className="flex flex-col space-y-1.5 p-6">
-              <h1 className="text-2xl font-semibold ">Skills & Expertise</h1>
-              {/* <p className="text-gray-400 text-sm">Your current Skills</p> */}
-            </div>
-            <div className="p-6 pt-0">
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="grid grid-cols-3 gap-8 max-sm:grid-cols-1 max-sm:gap-3">
-                      {mentor.skills.map((skill, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <div className="text-white inline-flex items-center rounded-full px-2.5 py-0.5 text-xs bg-purple-600">
-                            {i + 1}
-                          </div>
-                          <span className="text-sm">{skill} </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      case "reviews":
-        return <div>Reviews</div>;
-      default:
-        break;
-    }
-  };
+  
   useEffect(() => {
+    setIsLoading(true)
     axiosInstencs.get(`/mentor/${id}`, {
       headers: {
         "Authorization": `Bearer ${access_token}`
@@ -81,6 +31,8 @@ function MentorProfile() {
       setMentor(res.data.mentor);
       // console.log(res.data.mentor);
       setMchat(res.data.mentor.chats);
+      setBio(res.data.mentor.bio)
+      setIsLoading(false)
     }).catch((err) => console.log(err))
   }, [id, access_token]);
 
@@ -186,7 +138,55 @@ function MentorProfile() {
     }
 
   };
-
+const renderContent = () => {
+    switch (activeTab) {
+      case "about":
+        return (
+          <div>
+            <div className="rounded-lg border p-6 shadow-md bg-white">
+              <h1 className="text-2xl font-semibold pb-3">About Me</h1>
+              <p>{bio}</p>
+            </div>
+          </div>
+        );
+      case "skills":
+        return (
+          <div className="rounded-lg border bg-white shadow-md">
+            <div className="flex flex-col space-y-1.5 p-6">
+              <h1 className="text-2xl font-semibold ">Skills & Expertise</h1>
+              {/* <p className="text-gray-400 text-sm">Your current Skills</p> */}
+            </div>
+            <div className="p-6 pt-0">
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="grid grid-cols-3 gap-8 max-sm:grid-cols-1 max-sm:gap-3">
+                      {mentor.skills.map((skill, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <div className="text-white inline-flex items-center rounded-full px-2.5 py-0.5 text-xs bg-purple-600">
+                            {i + 1}
+                          </div>
+                          <span className="text-sm">{skill} </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case "reviews":
+        return <div>Reviews</div>;
+      default:
+        break;
+    }
+  };
 
   return (
     <div>
@@ -196,13 +196,31 @@ function MentorProfile() {
       <div className="fixed w-full z-20 pl-[224px] max-lg:pl-0 ">
         <Search />
       </div>
-      <div className="py-6 px-4 bg-gray-50 pt-24 ml-[224px] max-lg:ml-0">
+      <div className={`py-6 px-4 bg-gray-50 pt-24 ml-[224px] max-lg:ml-0 ${isLoading?"h-screen":""}`}>
         <Link
           to={"/dashboard"}
           className="inline-flex items-center justify-center gap-2 rounded-md text-sm px-4 py-2 mb-4 hover:bg-slate-200"
         >
           <i class="fa-solid fa-arrow-left"></i>Back to Dashboard
         </Link>
+        {isLoading?
+         <div class=" rounded-md p-4 max-w-sm w-full mx-auto pt-[10%] "> 
+  <div class="animate-pulse flex flex-col space-x-4 items-center ">
+    <div class="rounded-full bg-gray-300 h-20 w-20 mb-2"></div>
+    <div class="flex-1 space-y-6 py-1 w-[150%] max-sm:w-[100%]">
+      <div class="h-4 bg-gray-300 rounded"></div>
+      <div class="space-y-3">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+          <div class="h-4 bg-gray-300 rounded col-span-1"></div>
+           <div class="h-4 bg-gray-300 rounded col-span-2"></div>
+        </div>
+        <div class="h-4 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+</div>
+        :
 
         <div className="grid grid-cols-3 mt-8 gap-8 max-lg:block">
           <div className="space-y-6">
@@ -299,7 +317,7 @@ function MentorProfile() {
             className="col-start-2 col-end-4 max-lg:mt-5"
             defaultValue="about"
           >
-            <div className="grid grid-cols-3 bg-gray-200 p-1 rounded-md mb-6 max-sm:mb-2">
+            <div className="grid grid-cols-2 bg-gray-200 p-1 rounded-md mb-6 max-sm:mb-2">
               <button
                 onClick={() => setActiveTab("about")}
                 className={`rounded-sm px-3 py-1.5 text-sm ${activeTab === "about" ? "bg-white" : "text-gray-500"
@@ -314,17 +332,18 @@ function MentorProfile() {
               >
                 Skills
               </button>
-              <button
+              {/* <button
                 onClick={() => setActiveTab("reviews")}
                 className={`rounded-sm px-3 py-1.5 text-sm ${activeTab === "reviews" ? "bg-white" : "text-gray-500"
                   } `}
               >
                 Reviews
-              </button>
+              </button> */}
             </div>
             <div className="">{renderContent()}</div>
           </div>
         </div>
+}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-function Navbar({ category, start, works }) {
+function Navbar({  start, works }) {
   return (
     <div className="bg-white z-0 w-full border-b shadow-md max-sm:fixed">
       <div className="flex justify-between p-[10px] px-[19px] items-center py-[15px]">
@@ -19,12 +19,12 @@ function Navbar({ category, start, works }) {
             >
               Get Started
             </a>
-            <a
+            {/* <a
               href={category}
               className="px-[10px] hover:bg-purple-600 hover:text-white py-2 rounded-md mx-1"
             >
               Categories
-            </a>
+            </a> */}
             <a
               href={works}
               className="px-[10px] hover:bg-purple-600 hover:text-white py-2 rounded-md mx-1"
