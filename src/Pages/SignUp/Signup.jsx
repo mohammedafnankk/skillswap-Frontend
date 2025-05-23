@@ -297,8 +297,8 @@ function Signup() {
                 </span>
               </div>
               <div className={`bg-[#7c3bed] text-center rounded-[10px] mt-[10px] ${isCheck === false?"bg-purple-300":"bg-[#7c3bed] hover:bg-purple-700"}`}>
-                <button className={`text-[13px] text-white p-[10px] inline-flex items-center justify-center`}>
-                  {isLoading?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin gap-2"></p>:""}
+                <button className={`text-[13px] text-white p-[10px] inline-flex items-center justify-center gap-1`}>
+                  {isLoading?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
                   Create account
                 </button>
               </div>
