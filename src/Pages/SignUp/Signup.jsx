@@ -93,6 +93,7 @@ function Signup() {
     if(isCheck === false){
       return console.log("I agree to the terms of service and privacy policy {check box require}")
     }
+    setIsLoading(true)
     const Username = username.charAt(0).toUpperCase() + username.slice(1);
     axiosInstencs
       .post("/register", {
@@ -105,6 +106,7 @@ function Signup() {
       .then((res) => {
         toast.success("Register Successfully!!");
         navigate("/login");
+        setIsLoading(false)
         console.log(res.data);
       })
       .catch((err) => {
