@@ -41,7 +41,7 @@ function Chat() {
   // }, [access_token]);
 
   useEffect(() => {
-    setUserLoading(true)
+    // setUserLoading(true)
     axiosInstencs
       .get(`/singleuser/${userID}`, {
         headers: {
