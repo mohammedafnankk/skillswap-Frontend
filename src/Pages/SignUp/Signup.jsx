@@ -164,6 +164,7 @@ function Signup() {
                   type="text"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
+                  id="username"
                 />
                 <span
                   id="username_error"
@@ -180,6 +181,7 @@ function Signup() {
                   type="text"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
+                  id="email"
                 />
                 <span
                   id="email_error"
@@ -198,6 +200,7 @@ function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     require
+                    id="password"
                   />{" "}
                   <span
                     className="cursor-pointer absolute right-2 top-[5px]"
@@ -227,6 +230,7 @@ function Signup() {
                     onChange={(e) => setCPassword(e.target.value)}
                     value={cPassword}
                     require
+                    id="cpassword"
                   />
                   <span
                     className="absolute right-2 top-[5px] cursor-pointer"
@@ -257,8 +261,9 @@ function Signup() {
                     onChange={() => setRole("Student")}
                     value="student"
                     className="accent-purple-700 cursor-pointer"
+                    id="student"
                   />
-                  <label htmlFor="" className="text-sm pl-[5px]">
+                  <label htmlFor="student" className="text-sm pl-[5px]">
                     Student
                   </label>
                 </div>
@@ -270,8 +275,9 @@ function Signup() {
                     onChange={() => setRole("Mentor")}
                     value="mentor"
                     className="accent-purple-700 cursor-pointer"
+                    id="mentor"
                   />
-                  <label htmlFor="" className="text-sm pl-[5px]">
+                  <label htmlFor="mentor" className="text-sm pl-[5px]">
                     Mentor
                   </label>
                 </div>
@@ -286,6 +292,7 @@ function Signup() {
                   value={isCheck}
                   onClick={checkBox}
                   className="accent-purple-700 w-4 h-4 cursor-pointer"
+                  id="check"
                 />{" "}
                 <span className="pl-[5px] text-sm">
                   I agree to the{" "}
@@ -299,7 +306,7 @@ function Signup() {
                 </span>
               </div>
               <div className={`bg-[#7c3bed] text-center rounded-[10px] mt-[10px] ${isCheck === false?"bg-purple-300":"bg-[#7c3bed] hover:bg-purple-700"}`}>
-                <button className={`text-[13px] text-white p-[10px] inline-flex items-center justify-center gap-1`}>
+                <button type="submit" className={`text-[13px] text-white p-[10px] inline-flex items-center justify-center gap-1`}>
                   {isLoading?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin"></p>:""}
                   Create account
                 </button>
