@@ -95,6 +95,7 @@ function Signin() {
                 className=" focus:outline-purple-700 rounded-[10px] border-[1px] border-[#D9D9D9] text-[13px] p-[10px] w-full"
                 placeholder="Enter your email"
                 type="text"
+                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -112,6 +113,7 @@ function Signin() {
                   className=" focus:outline-purple-700 rounded-[10px] border-[1px] border-[#D9D9D9] text-[13px] p-[10px] w-full"
                   placeholder="Enter your password"
                   type={inputType}
+                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
