@@ -286,7 +286,7 @@ function Signup() {
                   className="text-red-600 text-[13px] pl-[5px]"
                 ></span>
               </div>
-              <div className="pb-[10px]">
+              <div className="pb-[10px] inline-flex items-center">
                 <input
                   type="checkbox"
                   value={isCheck}
@@ -294,16 +294,16 @@ function Signup() {
                   className="accent-purple-700 w-4 h-4 cursor-pointer"
                   id="check"
                 />{" "}
-                <span className="pl-[5px] text-sm">
+                <label htmlFor="check"  className="pl-[5px] text-sm cursor-pointer">
                   I agree to the{" "}
-                  <a href="#" className="text-purple-700 underline">
+                  <a href="#" className="text-purple-700 underline hover:no-underline hover:bg-purple-50 py-0.5 rounded-md px-0.5">
                     terms of service
                   </a>{" "}
                   and{" "}
-                  <a href="#" className="underline text-purple-700">
+                  <a href="#" className="underline text-purple-700 hover:no-underline hover:bg-purple-50 py-0.5 rounded-md px-0.5">
                     privacy policy
                   </a>
-                </span>
+                </label>
               </div>
               <div className={`bg-[#7c3bed] text-center rounded-[10px] mt-[10px] ${isCheck === false?"bg-purple-300":"bg-[#7c3bed] hover:bg-purple-700"}`}>
                 <button type="submit" className={`text-[13px] text-white p-[10px] inline-flex items-center justify-center gap-1`}>
