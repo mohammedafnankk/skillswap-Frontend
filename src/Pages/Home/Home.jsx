@@ -405,6 +405,9 @@ function Home() {
           </div>
         </section>
       </main>
+      <div>
+        
+      </div>
       <footer className="bg-gray-900 text-white py-12 max-sm:py-10">
         <div className="container px-4 mx-auto">
           <div className="grid grid-cols-4 gap-8 max-md:grid-cols-1">
@@ -433,16 +436,17 @@ function Home() {
               ))} */}
               </div>
               <div className="flex space-x-4 text-2xl">
-                <a href="#">
+                <a href="https://www.facebook.com/">
                   <i class="text-gray-400 hover:text-white fa-brands fa-facebook"></i>
                 </a>
-                <a href="#">
-                  <i class="text-gray-400 hover:text-white fa-brands fa-twitter"></i>
+                <a href="https://x.com/">
+                  
+                  <i class="text-gray-400 hover:text-white fa-brands fa-x-twitter"></i>
                 </a>
-                <a href="#">
+                <a href="https://www.instagram.com/___afnan_kk?igsh=MWlvanFyazVobzdpdw==">
                   <i class="text-gray-400 hover:text-white fa-brands fa-instagram"></i>
                 </a>
-                <a href="#">
+                <a href="https://github.com/mohammedafnankk/">
                   <i class="text-gray-400 hover:text-white fa-brands fa-github"></i>
                 </a>
               </div>
