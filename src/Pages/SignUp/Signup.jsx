@@ -257,9 +257,9 @@ function Signup() {
                 <div>
                   <input
                     type="radio"
-                    name="are_you"
+                    name="role"
                     onChange={() => setRole("Student")}
-                    value="Student"
+                    value="student"
                     className="accent-purple-700 cursor-pointer"
                     id="student"
                   />
@@ -271,9 +271,9 @@ function Signup() {
                 <div>
                   <input
                     type="radio"
-                    name="are_you"
+                    name="role"
                     onChange={() => setRole("Mentor")}
-                    value="Mentor"
+                    value="mentor"
                     className="accent-purple-700 cursor-pointer"
                     id="mentor"
                   />
