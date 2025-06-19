@@ -259,7 +259,7 @@ function Signup() {
                     type="radio"
                     name="are_you"
                     onChange={() => setRole("Student")}
-                    value="student"
+                    value="Student"
                     className="accent-purple-700 cursor-pointer"
                     id="student"
                   />
@@ -273,7 +273,7 @@ function Signup() {
                     type="radio"
                     name="are_you"
                     onChange={() => setRole("Mentor")}
-                    value="mentor"
+                    value="Mentor"
                     className="accent-purple-700 cursor-pointer"
                     id="mentor"
                   />
