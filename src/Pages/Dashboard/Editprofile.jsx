@@ -271,10 +271,10 @@ function Editprofile() {
               </div>
               <div className="p-6 pt-0 max-sm:p-5">
                 <div className="flex gap-6 max-sm:flex-col max-sm:items-center relative">
-                  <span>
+                  <span className="relative">
                     {isLoading?
                     
-                    <span className="absolute top-10 left-[4.8%] h-9 w-9 border-black border-2 border-t-transparent rounded-full animate-spin"></span>
+                    <span className="absolute top-11 left-11 h-9 w-9 border-purple-800 border-2 border-t-transparent rounded-full animate-spin"></span>
                     :""}
                     <img
                       src={avatar.avatar ? avatar.avatar : profileImg}
@@ -282,6 +282,7 @@ function Editprofile() {
                       className="rounded-full h-32 w-32 object-cover"
                     />
                   </span>
+                  
                   <div className="flex flex-col items-center justify-center gap-3 ">
                     <form className="">
                       <input
