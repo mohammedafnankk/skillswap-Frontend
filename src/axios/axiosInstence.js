@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 // const baseUrl = import.meta.env.VITE_BASE_URL;
+const backendUrl = import.meta.env.BACKEND_URL;
 const refreshToken = localStorage.getItem("refresh_token");
 // console.log(refreshToken);
 
 const axiosInstencs = axios.create({
-  baseURL: "https://skillswap-backend-65xf.onrender.com",
+  baseURL:backendUrl,
   // baseURL : baseUrl,
 });
 
