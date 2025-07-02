@@ -163,7 +163,7 @@ function Signin() {
               </Link>
             </p>
         </div>
-        <div className="max-lg:hidden bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center p-12 h-screen">
+        <div className="max-lg:hidden bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center p-12 ">
           <div className="">
             <h1 className="text-3xl font-bold mb-6">
               Grow your skills with SkillSwap
