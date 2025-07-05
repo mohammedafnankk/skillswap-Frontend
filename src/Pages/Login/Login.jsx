@@ -89,7 +89,7 @@ function Signin() {
 
           <form action="" className="" onSubmit={handleLogin}>
             <div>
-              <label className="text-sm ml-[5px]">Email</label>
+              <label htmlFor="email" className="text-sm ml-[5px]">Email</label>
               <br />
               <input
                 className=" focus:outline-purple-700 rounded-[10px] border-[1px] border-[#D9D9D9] text-[13px] p-[10px] w-full"
@@ -107,7 +107,7 @@ function Signin() {
             </div>
             <br />
             <div>
-              <label className="text-sm ml-[5px]">Password</label>
+              <label htmlFor="password" className="text-sm ml-[5px]">Password</label>
               <br />
               <div className="relative">
                 <input
@@ -142,8 +142,9 @@ function Signin() {
                   type="checkbox"
                   className="accent-purple-700 w-3 h-3 cursor-pointer"
                   defaultChecked
+                  id="checkbox"
                 />{" "}
-                <span className="text-sm pl-[5px]">Remember me</span>
+                <label htmlFor="checkbox" className="text-sm pl-[5px]">Remember me</label>
               </div>
               <div>
                 <Link
