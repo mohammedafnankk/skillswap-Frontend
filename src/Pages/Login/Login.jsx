@@ -117,7 +117,7 @@ function Signin() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  readOnly={isLoading}
+{/*                   readOnly={isLoading} */}
                 />
                 <span
                   className="cursor-pointer absolute right-2 top-[5px]"
