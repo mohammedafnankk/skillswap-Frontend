@@ -15,17 +15,17 @@ axiosInstencs.interceptors.response.use(
   (error) => {
     if (error.response.status === 401 || error.response.status === 404) {
       
-      axiosInstencs.post('/refresh-token',{token:refreshToken}).then((res)=>{
-        // console.log(res.data);
-        localStorage.setItem("access_token",res.data.accessToken)
-        localStorage.setItem("refresh_token",res.data.refreshToken)
-        window.location.reload()
-      }).catch((err)=>{
-        console.log(err);
-        // localStorage.clear()
+      // axiosInstencs.post('/refresh-token',{token:refreshToken}).then((res)=>{
+      //   // console.log(res.data);
+      //   localStorage.setItem("access_token",res.data.accessToken)
+      //   localStorage.setItem("refresh_token",res.data.refreshToken)
+      //   window.location.reload()
+      // }).catch((err)=>{
+      //   console.log(err);
+      //   // localStorage.clear()
         
         
-      })
+      // })
       
       
     
