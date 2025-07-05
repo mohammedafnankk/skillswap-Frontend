@@ -144,7 +144,7 @@ function Signin() {
                   defaultChecked
                   id="checkbox"
                 />{" "}
-                <label htmlFor="checkbox" className="text-sm pl-[5px]">Remember me</label>
+                <label htmlFor="checkbox" className="text-sm pl-[5px] cursor-pointer">Remember me</label>
               </div>
               <div>
                 <Link
