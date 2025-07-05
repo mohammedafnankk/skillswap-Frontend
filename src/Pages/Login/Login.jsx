@@ -12,7 +12,7 @@ function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inputType, setInputType] = useState("password");
-  const [isLoading,setIsLoading]= useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ function Signin() {
     } else {
       document.getElementById("pass_error").innerHTML = "";
     }
-    setIsLoading(true)
+    setIsLoading(true);
     axiosInstencs
       .post("/login", {
         email: email,
@@ -42,11 +42,11 @@ function Signin() {
       .then((res) => {
         localStorage.setItem("access_token", res.data.accessToken);
         localStorage.setItem("refresh_token", res.data.refreshToken);
-        localStorage.setItem("id",res.data.id)
+        localStorage.setItem("id", res.data.id);
         const userId = res.data.id;
         const skill = res.data.skills;
         // console.log(skill);
-      setIsLoading(false)
+        setIsLoading(false);
 
         dispatch(setUser(userId));
 
@@ -92,14 +92,13 @@ function Signin() {
               <label className="text-sm ml-[5px]">Email</label>
               <br />
               <input
-              
                 className=" focus:outline-purple-700 rounded-[10px] border-[1px] border-[#D9D9D9] text-[13px] p-[10px] w-full"
                 placeholder="Enter your email"
                 type="text"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-               readOnly={isLoading}
+                readOnly={isLoading}
               />
               <span
                 id="email_error"
@@ -156,15 +155,25 @@ function Signin() {
               </div>
             </div>
             <div className="bg-[#7c3bed] text-center rounded-[10px] mt-[10px] hover:bg-purple-700 ">
-              <button type="submit" className="text-sm text-white p-[10px] inline-flex items-center justify-center gap-1">{isLoading?<p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin gap-2"></p>:""}Sign in</button>
+              <button
+                type="submit"
+                className="text-sm text-white p-[10px] inline-flex items-center justify-center gap-1"
+              >
+                {isLoading ? (
+                  <p className="h-4 w-4 border-white border-2 border-t-transparent rounded-full animate-spin gap-2"></p>
+                ) : (
+                  ""
+                )}
+                Sign in
+              </button>
             </div>
           </form>
-            <p className="text-center pt-[20px] text-sm">
-              Don’t have an account?{" "}
-              <Link to="/signup" className="text-purple-700">
-                Sign Up
-              </Link>
-            </p>
+          <p className="text-center pt-[20px] text-sm">
+            Don’t have an account?{" "}
+            <Link to="/signup" className="text-purple-700">
+              Sign Up
+            </Link>
+          </p>
         </div>
         <div className="max-lg:hidden bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center p-12 ">
           <div className="">
