@@ -98,6 +98,7 @@ function Signin() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                readOnly={isLoading}
               />
               <span
                 id="email_error"
@@ -116,6 +117,7 @@ function Signin() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  readOnly={isLoading}
                 />
                 <span
                   className="cursor-pointer absolute right-2 top-[5px]"
