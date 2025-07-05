@@ -92,12 +92,14 @@ function Signin() {
               <label className="text-sm ml-[5px]">Email</label>
               <br />
               <input
+              
                 className=" focus:outline-purple-700 rounded-[10px] border-[1px] border-[#D9D9D9] text-[13px] p-[10px] w-full"
                 placeholder="Enter your email"
                 type="text"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+               readOnly={isLoading}
               />
               <span
                 id="email_error"
@@ -116,6 +118,7 @@ function Signin() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  readOnly={isLoading}
                 />
                 <span
                   className="cursor-pointer absolute right-2 top-[5px]"
