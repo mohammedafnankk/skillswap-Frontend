@@ -219,7 +219,7 @@ function Editprofile() {
       .patch(`/personalinfo/${id}`, {
         username: userName,
         email: email,
-        role: role,
+        // role: role,
         bio: bio,
         company: company,
         website: website,
@@ -367,7 +367,8 @@ function Editprofile() {
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                     type="text"
-                    className="border px-3 py-2 rounded-md focus:outline-purple-600 text-sm "
+                    className="border px-3 py-2 rounded-md focus:outline-purple-600 text-sm cursor-not-allowed "
+                    disabled
                   />
                   <span
                     id="role-require"
