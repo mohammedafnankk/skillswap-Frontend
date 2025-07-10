@@ -364,8 +364,8 @@ function Editprofile() {
                     Role
                   </label>
                   <input
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    // value={role}
+                    // onChange={(e) => setRole(e.target.value)}
                     type="text"
                     className="border px-3 py-2 rounded-md focus:outline-purple-600 text-sm cursor-not-allowed "
                     disabled
